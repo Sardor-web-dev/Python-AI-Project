@@ -12,10 +12,10 @@ async def lifespan(app: FastAPI):
     Base.metadata.create_all(engine)
     print("Все таблицы созданы")
     yield
-app = FastAPI(
-    title="Мой стартап",
-    lifespan=lifespan
-)
+
+
+app = FastAPI(title="Мой стартап", lifespan=lifespan)
+
 
 @app.get("/requests")
 def get_my_requests(request: Request):
@@ -26,10 +26,9 @@ def get_my_requests(request: Request):
 
 
 @app.post("/requests")
-
 def send_propmt(
-        request: Request,
-        prompt: str = Body(embed=True),
+    request: Request,
+    prompt: str = Body(embed=True),
 ):
     user_ip_address = request.client.host
     answer = get_answer_from_gemini(prompt)
@@ -40,4 +39,10 @@ def send_propmt(
     )
     return {"answer": answer}
 
-app.add_middleware(CORSMiddleware, allow_origins=["*"])
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
