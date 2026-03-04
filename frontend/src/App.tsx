@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 function App() {
-  const API_URL = "http://localhost:8000/requests";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
   const [prompt, setPrompt] = useState("");
   const [answer, setAnswer] = useState("Ответ появится здесь.");
@@ -11,7 +11,7 @@ function App() {
 
   const fetchHistory = async () => {
     try {
-      const res = await fetch(API_URL);
+      const res = await fetch(API_URL + "/requests");
       if (!res.ok) throw new Error();
       const data = await res.json();
       setHistory(data);
@@ -27,7 +27,7 @@ function App() {
 
     setLoading(true);
     try {
-      const res = await fetch(API_URL, {
+      const res = await fetch(API_URL + "/requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
