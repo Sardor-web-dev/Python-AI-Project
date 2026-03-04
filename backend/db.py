@@ -9,7 +9,6 @@ session = sessionmaker(engine)
 class Base(DeclarativeBase):
     pass
 
-
 class ChatRequests(Base):
     __tablename__ = "chat_requests"
 
